@@ -16,6 +16,13 @@ In order to do long-term storage and offer direct integration with visualisation
 
 By integrating MQTT and Grafana, you can create a seamless pipeline for collecting real-time data from sensors, devices, or applications, and then visualizing it in an intuitive and user-friendly interface. This combination is particularly effective in scenarios such as smart home systems, industrial automation, environmental monitoring, and any application where timely and actionable insights are critical.
 
+**Dataflow**
+
+
+![](assets/20250114_200047_dataflowv2.png)
+
+
+
 Rollout:
 
 ```docker-compose up --build -d
@@ -26,8 +33,4 @@ mqtt hivemq schema create --id=mytemp-out-schema   --file=mytemp-out-schema.json
 mqtt hivemq script create --id=add_timestamp --file=add_timestamp.js --type=transformation
 mqtt hivemq data-policy create --file=add_ts_policy.json
 mqtt pub -t temp/test --message-file=mytemp.json
-```
-
-```
-
 ```
