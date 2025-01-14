@@ -17,3 +17,16 @@ Grafana is a powerful visualization and analytics platform that excels at turnin
 In order to do long-term storage and offer direct integration with visualisation systems such as Grafana a intermediate Postgress database is used. Both HiveMQ brokers and Grafa integrate very good with this open source platform.
 
 By integrating MQTT and Grafana, you can create a seamless pipeline for collecting real-time data from sensors, devices, or applications, and then visualizing it in an intuitive and user-friendly interface. This combination is particularly effective in scenarios such as smart home systems, industrial automation, environmental monitoring, and any application where timely and actionable insights are critical.
+
+Rollout: 
+
+docker-compose up --build -d      
+sleep 30
+curl  -X POST localhost:8888/api/v1/data-hub/management/start-trial
+
+mqtt hivemq schema create --id=mytemp-in-schema  --file=mytemp-in-schema.json --type=json
+mqtt hivemq schema create --id=mytemp-out-schema --file=mytemp-out-schema.json --type=json
+mqtt hivemq script create --id=add_timestamp --file=add_timestamp.js --type=transformation
+mqtt hivemq data-policy create --file=add_ts_policy.json  
+
+mqtt pub -t temp/test --message-file=mytemp.json 
