@@ -1,0 +1,6 @@
+FROM hivemq/hivemq4:latest
+
+COPY custom-config.xml /opt/hivemq/conf/config.xml
+COPY custom-statement.sql /opt/hivemq/extensions/hivemq-postgresql-extension/conf/statement.sql
+COPY custom-pg-config.xml /opt/hivemq/extensions/hivemq-postgresql-extension/conf/config.xml
+RUN rm -f /opt/hivemq/extensions/hivemq-postgresql-extension/DISABLED

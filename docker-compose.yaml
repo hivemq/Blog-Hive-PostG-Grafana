@@ -1,0 +1,58 @@
+version: "2"
+services:
+
+  hivemq:
+    build:
+      context: .
+      dockerfile: dockerfile-HiveMQ
+    container_name: hivemq
+    ports:
+      - "1883:1883"
+      - "8080:8080"
+      - "8888:8888"
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - monitoring
+    volumes:
+      - grafana-volume:/var/lib/grafana
+      - ./provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./provisioning/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD_SET=true 
+
+ 
+
+  postgress:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: yourusername
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: mqtt
+    ports:
+      - "5432:5432"
+    networks:
+      - monitoring
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+
+
+
+
+networks:
+  monitoring:
+volumes:
+  grafana-volume:
+  postgres_data:

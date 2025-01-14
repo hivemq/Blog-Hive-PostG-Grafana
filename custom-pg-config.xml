@@ -1,0 +1,33 @@
+<hivemq-postgresql-extension xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                             xsi:noNamespaceSchemaLocation="config.xsd">
+
+<!-- Custom-PG-config.xml -->
+
+    <postgresqls>
+        <postgresql>
+            <id>my-postgresql-id</id>
+            <host>postgres</host>
+            <port>5432</port>
+            <database>mqtt</database>
+            <username>yourusername</username>
+            <password>yourpassword</password>
+        </postgresql>
+    </postgresqls>
+
+    <mqtt-to-postgresql-routes>
+
+
+        <!-- insert every message using the STATEMENT TEMPLATE processor -->
+        <mqtt-to-postgresql-route>
+            <id>my-mqtt-to-postgresql-route-template</id>
+            <postgresql-id>my-postgresql-id</postgresql-id>
+            <mqtt-topic-filters>
+                <mqtt-topic-filter>Temp-TS/#</mqtt-topic-filter>
+            </mqtt-topic-filters>
+            <processor>
+                <statement-template>conf/statement.sql</statement-template>
+            </processor>
+        </mqtt-to-postgresql-route>
+
+    </mqtt-to-postgresql-routes>
+</hivemq-postgresql-extension>

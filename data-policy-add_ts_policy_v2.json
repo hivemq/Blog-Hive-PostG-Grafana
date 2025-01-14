@@ -1,0 +1,65 @@
+{
+  "id" : "${instanceId}-add_ts_policy",
+  "createdAt" : "2025-01-08T09:30:18.436Z",
+  "lastUpdatedAt" : "2025-01-08T09:34:06.412Z",
+  "matching" : {
+    "topicFilter" : "temp/#"
+  },
+  "validation" : {
+    "validators" : [ {
+      "type" : "schema",
+      "arguments" : {
+        "strategy" : "ALL_OF",
+        "schemas" : [ {
+          "schemaId" : "${instanceId}-mytemp-in-schema-1",
+          "version" : "latest"
+        } ]
+      }
+    } ]
+  },
+  "onSuccess" : {
+    "pipeline" : [ {
+      "id" : "operation-QSawq",
+      "functionId" : "System.log",
+      "arguments" : {
+        "level" : "INFO",
+        "message" : "OK message recieved on ${topic}"
+      }
+    }, {
+      "id" : "operation-WO12F",
+      "functionId" : "Serdes.deserialize",
+      "arguments" : {
+        "schemaVersion" : "latest",
+        "schemaId" : "${instanceId}-mytemp-in-schema-1"
+      }
+    }, {
+      "id" : "operation-ioIoO",
+      "functionId" : "fn:${instanceId}-add_timestamp-1:latest",
+      "arguments" : { }
+    }, {
+      "id" : "operation-SEkwu",
+      "functionId" : "Serdes.serialize",
+      "arguments" : {
+        "schemaVersion" : "latest",
+        "schemaId" : "${instanceId}-mytemp-out-schema-1"
+      }
+    }, {
+      "id" : "operation-E0w6n",
+      "functionId" : "Delivery.redirectTo",
+      "arguments" : {
+        "topic" : "Temp-TS/${topic}",
+        "applyPolicies" : false
+      }
+    } ]
+  },
+  "onFailure" : {
+    "pipeline" : [ {
+      "id" : "operation-n7Wcb",
+      "functionId" : "System.log",
+      "arguments" : {
+        "level" : "WARN",
+        "message" : "${policyId} : Invalid message content in message on ${topic}"
+      }
+    } ]
+  }
+}
