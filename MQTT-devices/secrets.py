@@ -1,6 +1,6 @@
 secrets = {
-    "ssid": "VoldeModem",
-    "password": "yarith02",
+    "ssid": "???",
+    "password": "???",
     "mqtt_broker": "192.168.0.171",
     "mqtt_topic": "temp/pico",
     "sensor_id": "Pico2W-1",
