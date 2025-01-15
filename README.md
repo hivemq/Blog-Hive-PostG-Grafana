@@ -25,7 +25,10 @@ By integrating MQTT and Grafana, you can create a seamless pipeline for collecti
 
 Rollout:
 
-```docker-compose up --build -d
+```
+git clone https://github.com/hivemq/Blog-Hive-PostG-Grafana
+cd Blog-Hive-PostG-Grafana
+docker-compose up --build -d
 sleep 15
 curl  -X POST localhost:8888/api/v1/data-hub/management/start-trial
 mqtt hivemq schema create --id=mytemp-in-schema   --file=mytemp-in-schema.json   --type=json
